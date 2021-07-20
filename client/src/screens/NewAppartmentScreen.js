@@ -13,6 +13,8 @@ import UploadArea from "../components/Upload.js"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
+import dotenv from "dotenv"
+dotenv.config()
 
 const { Option } = Select
 
@@ -81,13 +83,14 @@ export default function NewAppartmentScreen() {
   const [options, setOptions] = useState([])
 
   const onSearch = async (searchText) => {
+    console.log(process.env.REACT_APP_DADATA_TOKEN)
     let options = await axios.post(
       "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address",
       { query: searchText, count: 5 },
       {
         headers: {
           ContentType: "application/json",
-          Authorization: "Token 04f9da71b29ce730ccc80d87835e5fcadf166ba1",
+          Authorization: `Token ${process.env.REACT_APP_DADATA_TOKEN}`,
         },
       }
     )

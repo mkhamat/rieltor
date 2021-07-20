@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 import appartmentRoutes from "./routes/appartmentRoutes.js"
 import uploadRoutes from "./routes/imageRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import dotenv from "dotenv"
+dotenv.config()
 
 const db = mongoose.connection
 db.once("open", () => {
@@ -10,15 +12,12 @@ db.once("open", () => {
 })
 
 const app = express()
-mongoose.connect(
-  "mongodb+srv://mkhamat:herosima@cluster0.p3b4m.mongodb.net/rieltor_upload",
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  }
-)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+})
 
 app.use(express.json())
 app.use("/static", express.static("images"))
