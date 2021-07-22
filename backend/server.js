@@ -1,14 +1,21 @@
+import http from "http"
 import express from "express"
 import mongoose from "mongoose"
+import dotenv from "dotenv"
+import path from "path"
+import fs from "fs"
+
 import appartmentRoutes from "./routes/appartmentRoutes.js"
 import uploadRoutes from "./routes/imageRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
-import path from "path"
+
 import { fileURLToPath } from "url"
-import dotenv from "dotenv"
 dotenv.config()
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const privateKey = fs.readFileSync(process.env.PRIVATE_PATH)
+const certificate = fs.readFileSync(process.env.CERTIFICATE_PATH)
 
 const db = mongoose.connection
 db.once("open", () => {
@@ -30,9 +37,11 @@ app.use(express.static(path.join(__dirname, "../client/build")))
 app.use("/api/appartments", appartmentRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/images", uploadRoutes)
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on ${process.env.PORT}`)
-})
+
+http
+  .createServer({ key: privateKey, cert: certificate }, app)
+  .listen(process.env.PORT)
