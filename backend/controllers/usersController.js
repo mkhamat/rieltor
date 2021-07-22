@@ -26,7 +26,7 @@ async function userLogin(req, res, next) {
     if (user) {
       let compare = await bcrypt.compare(req.body.password, user.password)
       if (compare) {
-        const token = jwt.sign({ id: user._id }, "vopros07")
+        const token = jwt.sign({ id: user._id }, process.env.SECRET)
         res
           .status(200)
           .json({ login: user.login, admin: user.admin, token: token })
