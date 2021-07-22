@@ -21,10 +21,13 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use(express.json())
 app.use("/static", express.static("images"))
+app.use(express.static("../client/build"))
+
 app.use("/appartments", appartmentRoutes)
 app.use("/users", userRoutes)
 app.use("/images", uploadRoutes)
 
-app.listen(3001, () => {
-  console.log("works")
+app.get("*", (req, res) => {
+  res.sendFile("../client/build/index.html")
 })
+app.listen(3001)

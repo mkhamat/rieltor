@@ -1,4 +1,4 @@
-import { Collapse, Image } from "antd"
+import { Carousel, Collapse, Image } from "antd"
 import { PhoneOutlined } from "@ant-design/icons"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -32,20 +32,21 @@ export default function AppartmentScreen() {
       <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>{`${rooms()}, ${
         info.m2
       } м², ${info.floor}/${info.floors} этаж`}</h1>
-      <Image.PreviewGroup>
+      <Carousel style={{ maxWidth: 500 }} dotPosition={"top"}>
         {info.pictures?.map((pic, i) => {
           return (
             <Image
               style={{
-                width: i > 0 ? 100 : null,
-                height: i > 0 ? 100 : null,
-                margin: "5px",
+                margin: "auto",
+                // maxWidth: 300,
+                // height: i > 0 ? 100 : null,
+                // margin: "5px",
               }}
               src={`/static/${pic}`}
             />
           )
         })}
-      </Image.PreviewGroup>
+      </Carousel>
       <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>{info.address}</p>
       <Collapse ghost>
         <Collapse.Panel
