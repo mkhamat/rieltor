@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 
 async function userAuth(req, res, next) {
   try {
-    let token = await jwt.verify(req.body.token, "vopros07")
+    let token = await jwt.verify(req.body.token, process.env.SECRET)
     let user = await User.findOne({ _id: token.id })
     if (user) {
       res
