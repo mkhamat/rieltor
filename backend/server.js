@@ -27,7 +27,7 @@ app.use("/appartments", appartmentRoutes)
 app.use("/users", userRoutes)
 app.use("/images", uploadRoutes)
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile("../client/build/index.html")
 })
 app.listen(3001)
