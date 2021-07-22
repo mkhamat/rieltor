@@ -10,7 +10,7 @@ export default function AppartmentScreen() {
 
   useEffect(() => {
     ;(async () => {
-      axios.get(`/appartments/${params.id}`).then((res) => {
+      axios.get(`/api/appartments/${params.id}`).then((res) => {
         console.log(res.data)
         setInfo(res.data)
       })

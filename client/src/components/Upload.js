@@ -7,7 +7,7 @@ export default function UploadArea({ imageList, setImageList }) {
   const props = {
     name: "image",
     multiple: true,
-    action: "/images",
+    action: "/api/images",
 
     onChange(info) {
       const { status } = info.file

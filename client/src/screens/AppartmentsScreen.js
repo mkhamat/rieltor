@@ -28,7 +28,7 @@ export default function AppartmentScreen({ user }) {
 
   const fetch = async (p) => {
     let response = await axios.post(
-      `/appartments`,
+      `/api/appartments`,
       {
         filter: filter,
         pageState: { ...pageState, current: p },

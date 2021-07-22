@@ -20,7 +20,7 @@ export default function NewAppartmentScreen() {
 
   const onFinish = async (values) => {
     axios
-      .post("/appartments/new", {
+      .post("/api/appartments/new", {
         ...values,
         pictures: imageList,
       })

@@ -16,7 +16,7 @@ export default function AppartmentCard({ props, user, fetch, p }) {
   }
 
   const confirm = async () => {
-    await axios.delete(`/appartments/delete/${props._id}`).then((res) => {
+    await axios.delete(`/api/appartments/delete/${props._id}`).then((res) => {
       if (res.status === 200) {
         message.success("Удалено")
         fetch(p)

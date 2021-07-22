@@ -6,7 +6,7 @@ export default function LoginScreen({ user, setUser }) {
   const history = useHistory()
   async function onFinish(values) {
     await axios
-      .post("/users/login", values)
+      .post("/api/users/login", values)
       .then(({ data }) => {
         setUser(data)
         localStorage.setItem("user", JSON.stringify(data))

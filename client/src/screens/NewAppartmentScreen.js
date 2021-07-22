@@ -27,7 +27,7 @@ export default function NewAppartmentScreen() {
   useEffect(() => {
     ;(async () => {
       if (id) {
-        axios.get(`/appartments/${id}`).then((res) => {
+        axios.get(`/api/appartments/${id}`).then((res) => {
           form.setFieldsValue(res.data)
           setImageList([...res.data.pictures])
         })
@@ -38,7 +38,7 @@ export default function NewAppartmentScreen() {
   const onFinish = async (values) => {
     axios
       .request({
-        url: "/appartments/" + `${id ? "edit/" + id : "new"}`,
+        url: "/api/appartments/" + `${id ? "edit/" + id : "new"}`,
         method: id ? "PUT" : "POST",
         data: {
           ...values,
@@ -57,7 +57,7 @@ export default function NewAppartmentScreen() {
   const handleDelete = async (image) => {
     let array = [...imageList]
     await axios
-      .delete(`/images/${id}/${image}`)
+      .delete(`/api/images/${id}/${image}`)
       .then((res) => {
         if (res.status === 200) {
           message.success("Успешно удалено")

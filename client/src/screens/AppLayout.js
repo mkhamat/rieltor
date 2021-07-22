@@ -43,7 +43,7 @@ export default function AppLayout() {
     ;(async () => {
       let user = JSON.parse(localStorage.getItem("user"))
       if (user?.token) {
-        let auth = await axios.post("/users/auth", { token: user.token })
+        let auth = await axios.post("/api/users/auth", { token: user.token })
         setUser(auth.data)
         setLoading(false)
       } else {

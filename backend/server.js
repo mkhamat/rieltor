@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename)
 
 const db = mongoose.connection
 db.once("open", () => {
-  console.log("mongo connected")
+  console.log("MongoDB connected!")
 })
 
 const app = express()
@@ -27,10 +27,12 @@ app.use(express.json())
 app.use("/static", express.static(path.join(__dirname, "./images")))
 app.use(express.static(path.join(__dirname, "../client/build")))
 
-app.use("/appartments", appartmentRoutes)
-app.use("/users", userRoutes)
-app.use("/images", uploadRoutes)
+app.use("/api/appartments", appartmentRoutes)
+app.use("/api/users", userRoutes)
+app.use("/api/images", uploadRoutes)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
-app.listen(process.env.PORT)
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on ${process.env.PORT}`)
+})
