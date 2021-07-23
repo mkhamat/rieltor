@@ -42,6 +42,11 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
-http
-  .createServer({ key: privateKey, cert: certificate }, app)
-  .listen(process.env.PORT)
+app.listen(80)
+https.createServer({ key: privateKey, cert: certificate }, app).listen(443)
+
+app.all("*", (req, res) => {
+  if (!req.secure) {
+    res.redirect("https://" + req.headers.host + req.url)
+  }
+})
