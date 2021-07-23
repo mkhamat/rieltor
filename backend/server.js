@@ -1,4 +1,4 @@
-import http from "http"
+import https from "https"
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
