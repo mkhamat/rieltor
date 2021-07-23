@@ -47,6 +47,6 @@ https.createServer({ key: privateKey, cert: certificate }, app).listen(443)
 
 app.all("*", (req, res) => {
   if (!req.secure) {
-    res.redirect("https://" + req.headers.host + req.url)
+    res.redirect(301, "https://" + req.headers.host + req.url)
   }
 })
