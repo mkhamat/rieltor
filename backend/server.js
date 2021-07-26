@@ -1,9 +1,7 @@
-import https from "https"
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import path from "path"
-import fs from "fs"
 
 import appartmentRoutes from "./routes/appartmentRoutes.js"
 import uploadRoutes from "./routes/imageRoutes.js"
@@ -14,8 +12,6 @@ dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const privateKey = fs.readFileSync(process.env.PRIVATE_PATH)
-const certificate = fs.readFileSync(process.env.CERTIFICATE_PATH)
 
 const db = mongoose.connection
 db.once("open", () => {
@@ -42,11 +38,4 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
-app.listen(80)
-https.createServer({ key: privateKey, cert: certificate }, app).listen(443)
-
-app.all("*", (req, res) => {
-  if (!req.secure) {
-    res.redirect(301, "https://" + req.headers.host + req.url)
-  }
-})
+app.listen(process.env.PORT)
