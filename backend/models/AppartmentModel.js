@@ -5,6 +5,12 @@ const appartmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price_type: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
   rooms: {
     type: Number,
   },
