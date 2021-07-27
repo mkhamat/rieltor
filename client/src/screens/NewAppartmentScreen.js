@@ -8,6 +8,7 @@ import {
   Select,
   Image,
   Popconfirm,
+  Radio,
 } from "antd"
 import UploadArea from "../components/Upload.js"
 import axios from "axios"
@@ -104,9 +105,8 @@ export default function NewAppartmentScreen() {
       <Form
         name="basic"
         onFinish={onFinish}
-        labelCol={{ span: 24 }}
+        labelCol={{ xs: { span: 24 }, lg: { span: 6 } }}
         labelAlign={"left"}
-        style={{ maxWidth: "600px" }}
         form={form}
       >
         <Form.Item name="address" label="Адрес">
@@ -116,6 +116,21 @@ export default function NewAppartmentScreen() {
             placeholder="Поиск по улице, индексу"
           />
         </Form.Item>
+        <Form.Item name="price_type" label="Тип">
+          <Radio.Group>
+            <Radio.Button value="rent">Аренда</Radio.Button>
+            <Radio.Button value="sell">Продажа</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="price" label="Цена">
+          <InputNumber
+            formatter={(value) =>
+              `₽ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            min={1}
+            style={{ width: 150 }}
+          />
+        </Form.Item>
         <Form.Item name="floor" label="Этаж">
           <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
         </Form.Item>
@@ -123,16 +138,7 @@ export default function NewAppartmentScreen() {
           <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
         </Form.Item>
         <Form.Item name="rooms" label="Кол-во комнат">
-          <Select all style={{ width: 200 }}>
-            <Option value={1}>1</Option>
-            <Option value={2}>2</Option>
-            <Option value={3}>3</Option>
-            <Option value={4}>4</Option>
-            <Option value={5}>5</Option>
-            <Option value={6}>6 и более</Option>
-            <Option value={9}>Свободная планировка</Option>
-            <Option value={0}>Студия</Option>
-          </Select>
+          <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
         </Form.Item>
         <Form.Item name="m2" label="Общая площадь, м2">
           <InputNumber min={1} maxLength={8} style={{ width: 100 }} />
@@ -166,7 +172,7 @@ export default function NewAppartmentScreen() {
             })}
           </Image.PreviewGroup>
         )}
-        <Form.Item name="pictures" label="Фотографии">
+        <Form.Item name="pictures" labelCol={{ span: 0 }}>
           <UploadArea imageList={imageList} setImageList={setImageList} />
         </Form.Item>
         <Form.Item>
