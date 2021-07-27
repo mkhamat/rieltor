@@ -55,6 +55,10 @@ async function getAppartments(req, res, next) {
           filters["m2"] = { $gte: filter.m2 }
         } else if (key === "m22") {
           filters["m2"] = { $lte: filter.m22 }
+        } else if (key === "priceFrom") {
+          filters["price"] = { $gte: filter.priceFrom }
+        } else if (key === "priceTo") {
+          filters["price"] = { $lte: filter.priceTo }
         } else {
           filters[key] = filter[key]
         }
