@@ -1,4 +1,4 @@
-import { Col, Input, InputNumber, Pagination, Row, Select } from "antd"
+import { Col, Input, InputNumber, Pagination, Radio, Row, Select } from "antd"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import AppartmentCard from "../components/AppartmentCard"
@@ -14,6 +14,9 @@ export default function AppartmentScreen({ user }) {
     floor: null,
     m2: null,
     m22: null,
+    price_type: null,
+    priceFrom: null,
+    priceTo: null,
   })
 
   const [pageState, setPageState] = useState({
@@ -62,61 +65,85 @@ export default function AppartmentScreen({ user }) {
           setFilter({ ...filter, search: e.target.value })
         }}
       />
-      <Select
-        placeholder="Кол-во комнат"
-        style={{ margin: "1em 0", width: 150 }}
-        allowClear
-        onChange={(value) => {
-          setFilter({ ...filter, rooms: value })
+      <Radio.Group
+        onChange={(e) => {
+          setFilter({ ...filter, price_type: e.target.value })
         }}
       >
-        <Option value={1}>1</Option>
-        <Option value={2}>2</Option>
-        <Option value={3}>3</Option>
-        <Option value={4}>4</Option>
-        <Option value={5}>5</Option>
-        <Option value={6}>6 и более</Option>
-        <Option value={9}>Свободная планировка</Option>
-        <Option value={0}>Студия</Option>
-      </Select>
-      <InputNumber
-        min={1}
-        type="number"
-        maxLength={3}
-        style={{ margin: "1em 0", width: 60 }}
-        placeholder="Этаж"
-        onChange={(value) => {
-          setFilter({ ...filter, floor: value })
-        }}
-      />
-      <InputNumber
-        min={1}
-        type="number"
-        maxLength={8}
-        style={{ margin: "1em 0", width: 100 }}
-        placeholder="Площадь>"
-        onChange={(value) => {
-          setFilter({ ...filter, m2: value })
-        }}
-      />
-      <InputNumber
-        min={1}
-        type="number"
-        maxLength={8}
-        style={{ margin: "1em 0", width: 100 }}
-        placeholder="<Площадь"
-        onChange={(value) => {
-          setFilter({ ...filter, m22: value })
-        }}
-      />
+        <Radio.Button value="rent">Аренда</Radio.Button>
+        <Radio.Button value="sell">Продажа</Radio.Button>
+      </Radio.Group>
+      <Input.Group>
+        <InputNumber
+          placeholder="Комнаты"
+          style={{ margin: "1em 0", width: 100 }}
+          allowClear
+          onChange={(value) => {
+            setFilter({ ...filter, rooms: value })
+          }}
+        />
+        <InputNumber
+          min={1}
+          type="number"
+          maxLength={3}
+          style={{ margin: "1em 0", width: 100 }}
+          placeholder="Этаж"
+          onChange={(value) => {
+            setFilter({ ...filter, floor: value })
+          }}
+        />
+      </Input.Group>
+      <Input.Group>
+        <InputNumber
+          min={1}
+          type="number"
+          maxLength={8}
+          style={{ margin: "1em 0", width: 100 }}
+          placeholder="Площадь >"
+          onChange={(value) => {
+            setFilter({ ...filter, m2: value })
+          }}
+        />
+        <InputNumber
+          min={1}
+          type="number"
+          maxLength={8}
+          style={{ margin: "1em 0", width: 100 }}
+          placeholder="< Площадь"
+          onChange={(value) => {
+            setFilter({ ...filter, m22: value })
+          }}
+        />
+      </Input.Group>
+      <Input.Group>
+        <InputNumber
+          min={1}
+          type="number"
+          style={{ margin: "1em 0", width: 100 }}
+          placeholder="Цена >"
+          onChange={(value) => {
+            setFilter({ ...filter, priceFrom: value })
+          }}
+        />
+        <InputNumber
+          min={1}
+          type="number"
+          style={{ margin: "1em 0", width: 100 }}
+          placeholder="< Цена"
+          onChange={(value) => {
+            setFilter({ ...filter, priceTo: value })
+          }}
+        />
+      </Input.Group>
       <div>
-        <Row gutter={16}>
+        <Row gutter={16} align="middle">
           {apps.map((app) => {
             return (
               <Col
+                style={{ margin: "1rem 0" }}
                 xs={{ span: 24 }}
                 sm={{ span: 24 }}
-                md={{ span: 24 }}
+                md={{ span: 12 }}
                 lg={{ span: 12 }}
                 xl={{ span: 8 }}
                 xxl={{ span: 6 }}
