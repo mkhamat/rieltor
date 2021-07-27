@@ -1,8 +1,14 @@
-import { Carousel, Collapse, Image } from "antd"
-import { PhoneOutlined } from "@ant-design/icons"
+import { Collapse, Image } from "antd"
+import {
+  PhoneOutlined,
+  FieldTimeOutlined,
+  WalletOutlined,
+  TagOutlined,
+} from "@ant-design/icons"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import pricentype from "../utils/priceAndType.js"
 
 export default function AppartmentScreen() {
   const params = useParams()
@@ -17,37 +23,46 @@ export default function AppartmentScreen() {
     })()
   }, [])
 
-  function rooms() {
-    if (info.rooms <= 6) {
-      return `${info.rooms}-комн.`
-    } else if (info.rooms === 9) {
-      return "Свободная планировка"
-    } else if (info.rooms === 0) {
-      return "Студия"
-    }
-  }
+  const pnt = pricentype(info.price, info.price_type)
+  const pictures = info.pictures?.map((pic, i) => {
+    return (
+      <Image
+        key={i}
+        style={{
+          display: "inline-block",
+          backgroundSize: "cover",
+          width: 124,
+          height: 124,
+          border: "solid white",
+        }}
+        src={`/static/${pic}`}
+      />
+    )
+  })
 
   return (
     <>
-      <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>{`${rooms()}, ${
-        info.m2
-      } м², ${info.floor}/${info.floors} этаж`}</h1>
-      <Carousel style={{ maxWidth: 500 }} dotPosition={"top"}>
-        {info.pictures?.map((pic, i) => {
-          return (
-            <Image
-              style={{
-                margin: "auto",
-                // maxWidth: 300,
-                // height: i > 0 ? 100 : null,
-                // margin: "5px",
-              }}
-              src={`/static/${pic}`}
-            />
-          )
-        })}
-      </Carousel>
-      <p style={{ fontWeight: "bold", fontSize: "1.2rem" }}>{info.address}</p>
+      <h1
+        style={{ fontSize: "2rem", fontWeight: "bold" }}
+      >{`${info.rooms}-комн., ${info.m2} м², ${info.floor} из ${info.floors} этаж`}</h1>
+      <Image.PreviewGroup>{pictures}</Image.PreviewGroup>
+      <p style={{ fontWeight: "bold", fontSize: "1.2rem", paddingTop: "1rem" }}>
+        {info.address}
+      </p>
+      <p>
+        {info.price_type === "rent" ? (
+          <>
+            <FieldTimeOutlined /> Аренда
+          </>
+        ) : (
+          <>
+            <WalletOutlined /> Продажа
+          </>
+        )}
+      </p>
+      <p>
+        <TagOutlined /> Цена: {pnt.priceFormat}
+      </p>
       <Collapse ghost>
         <Collapse.Panel
           header={
