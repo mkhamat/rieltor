@@ -1,6 +1,6 @@
 import multer from "multer"
 import fs from "fs"
-import { Appartment } from "../models/AppartmentModel.js"
+import { Property } from "../models/PropertyModel.js"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -16,7 +16,7 @@ const imageUpload = multer({ storage: storage })
 async function deleteImage(req, res, next) {
   try {
     if (req.params.id && req.params.image) {
-      let appartment = await Appartment.findById(req.params.id)
+      let appartment = await Property.findById(req.params.id)
       let index = appartment.pictures.indexOf(req.params.image)
       if (index >= 0) {
         appartment.pictures.splice(index, 1)
