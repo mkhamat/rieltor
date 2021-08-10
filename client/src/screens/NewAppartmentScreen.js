@@ -5,7 +5,6 @@ import {
   message,
   AutoComplete,
   InputNumber,
-  Select,
   Image,
   Popconfirm,
   Radio,
@@ -15,17 +14,29 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
 import dotenv from "dotenv"
-dotenv.config()
 
-const { Option } = Select
+dotenv.config()
 
 export default function NewAppartmentScreen() {
   const [imageList, setImageList] = useState([])
+  const [property, setProperty] = useState(null)
   const history = useHistory()
   const { id } = useParams()
   const [form] = Form.useForm()
 
+  const housingOptions = ["Квартира", "Дом", "Участок"]
+
+  const commercialOptions = [
+    "Офис",
+    "Здание",
+    "Помещение с/н",
+    "Склад",
+    "Гараж",
+    "Коммерческая земля",
+  ]
+
   useEffect(() => {
+    console.log("effect")
     ;(async () => {
       if (id) {
         axios.get(`/api/appartments/${id}`).then((res) => {
@@ -34,7 +45,7 @@ export default function NewAppartmentScreen() {
         })
       }
     })()
-  }, [])
+  }, [form, id])
 
   const onFinish = async (values) => {
     axios
@@ -116,11 +127,26 @@ export default function NewAppartmentScreen() {
             placeholder="Поиск по улице, индексу"
           />
         </Form.Item>
-        <Form.Item name="price_type" label="Тип">
+        <Form.Item name="price_type" label="Тип сделки">
           <Radio.Group>
             <Radio.Button value="rent">Аренда</Radio.Button>
             <Radio.Button value="sell">Продажа</Radio.Button>
           </Radio.Group>
+        </Form.Item>
+        <Form.Item name="property_type" label="Тип недвижимости">
+          <Radio.Group onChange={(e) => setProperty(e.target.value)}>
+            <Radio.Button value="housing">Жилая</Radio.Button>
+            <Radio.Button value="commercial">Коммерческая</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="property_object" label="Тип объекта">
+          <Radio.Group
+            optionType={"button"}
+            options={
+              (property === "housing" && housingOptions) ||
+              (property === "commercial" && commercialOptions)
+            }
+          />
         </Form.Item>
         <Form.Item name="price" label="Цена">
           <InputNumber
