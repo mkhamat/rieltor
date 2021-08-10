@@ -1,9 +1,9 @@
-import { Appartment } from "../models/AppartmentModel.js"
+import { Property } from "../models/PropertyModel.js"
 
 async function getAppartment(req, res, next) {
   try {
-    let appartment = await Appartment.findOne({ _id: req.params.id })
-    res.status(200).json(appartment)
+    let property = await Property.findOne({ _id: req.params.id })
+    res.status(200).json(property)
   } catch (err) {
     next(err)
   }
@@ -11,7 +11,7 @@ async function getAppartment(req, res, next) {
 
 async function removeAppartment(req, res, next) {
   try {
-    await Appartment.findByIdAndDelete(req.params.id)
+    await Property.findByIdAndDelete(req.params.id)
     res.status(200).json({ message: "removed" })
   } catch (err) {
     next(err)
@@ -20,7 +20,7 @@ async function removeAppartment(req, res, next) {
 
 async function updateAppartment(req, res, next) {
   try {
-    let appartment = await Appartment.findByIdAndUpdate(req.params.id, {
+    let appartment = await Property.findByIdAndUpdate(req.params.id, {
       ...req.body,
     })
     await appartment.save()
@@ -32,7 +32,8 @@ async function updateAppartment(req, res, next) {
 
 async function addAppartment(req, res, next) {
   try {
-    let appartment = await new Appartment({ ...req.body })
+    console.log(req.body)
+    let appartment = await new Property({ ...req.body })
     await appartment.save()
     res.status(200).json({ message: "added" })
   } catch (err) {
@@ -41,6 +42,7 @@ async function addAppartment(req, res, next) {
 }
 
 async function getAppartments(req, res, next) {
+  console.log(req.body.filter)
   try {
     let { current = 1, limit = 10 } = req.body.pageState
 
@@ -59,16 +61,19 @@ async function getAppartments(req, res, next) {
           filters["price"] = { $gte: filter.priceFrom }
         } else if (key === "priceTo") {
           filters["price"] = { $lte: filter.priceTo }
+        } else if (key === "property_object") {
+          filters["property_object"] = { $in: filter.property_object }
         } else {
           filters[key] = filter[key]
         }
       }
     }
 
-    let apps = await Appartment.find(filters)
+    let apps = await Property.find(filters)
       .limit(limit)
       .skip((current - 1) * limit)
-    let count = await Appartment.countDocuments(filters)
+
+    let count = await Property.countDocuments(filters)
     res.status(200).json({
       pageState: {
         count: count,
