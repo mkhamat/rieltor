@@ -21,7 +21,7 @@ export default function AppartmentScreen() {
         setInfo(res.data)
       })
     })()
-  }, [])
+  }, [params.id])
 
   const pnt = pricentype(info.price, info.price_type)
   const pictures = info.pictures?.map((pic, i) => {
