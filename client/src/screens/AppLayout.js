@@ -80,13 +80,13 @@ export default function AppLayout() {
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="/" icon={<OrderedListOutlined />}>
-                <Link to="/">Квартиры</Link>
+                <Link to="/">Объекты</Link>
               </Menu.Item>
             </>
           )}
           {user.admin && (
             <Menu.Item key="/newappartment" icon={<UploadOutlined />}>
-              <Link to="/newappartment">Новая квартира</Link>
+              <Link to="/newappartment">Новый объект</Link>
             </Menu.Item>
           )}
         </Menu>
@@ -95,8 +95,8 @@ export default function AppLayout() {
         <h1
           style={{ fontSize: "24px", fontWeight: "600", padding: "0.5em 1em" }}
         >
-          {(path === "/" && "Квартиры") ||
-            (path === "/newappartment" && "Новая квартира") ||
+          {(path === "/" && "Объекты") ||
+            (path === "/newappartment" && "Новый объект") ||
             (path === "/login" && "Вход в систему")}
         </h1>
         <Content style={{ margin: "0 16px", maxWidth: "1400px" }}>

@@ -1,9 +1,16 @@
-import { Col, Input, InputNumber, Pagination, Radio, Row, Select } from "antd"
+import {
+  BackTop,
+  Col,
+  Input,
+  InputNumber,
+  Pagination,
+  Radio,
+  Row,
+  Select,
+} from "antd"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import AppartmentCard from "../components/AppartmentCard"
-
-const { Option } = Select
 
 export default function AppartmentScreen({ user }) {
   const [apps, setApps] = useState([])
@@ -22,12 +29,24 @@ export default function AppartmentScreen({ user }) {
   const [pageState, setPageState] = useState({
     current: 1,
     count: 0,
-    limit: 9,
+    limit: 6,
   })
 
   const handleChange = (p) => {
     fetch(p)
   }
+
+  const selectOptions = [
+    { value: "Офис", name: "Офис" },
+    { value: "Здание", name: "Здание" },
+    { value: "Помещение с/н", name: "Помещение с/н" },
+    { value: "Склад", name: "Склад" },
+    { value: "Гараж", name: "Гараж" },
+    { value: "Коммерческая земля", name: "Коммерческая земля" },
+    { value: "Квартира", name: "Квартира" },
+    { value: "Дом", name: "Дом" },
+    { value: "Участок", name: "Участок" },
+  ]
 
   const fetch = async (p) => {
     let response = await axios.post(
@@ -52,6 +71,7 @@ export default function AppartmentScreen({ user }) {
 
   return (
     <>
+      <BackTop />
       <Pagination
         onChange={handleChange}
         current={pageState.current}
@@ -74,10 +94,25 @@ export default function AppartmentScreen({ user }) {
         <Radio.Button value="sell">Продажа</Radio.Button>
       </Radio.Group>
       <Input.Group>
+        <Select
+          options={selectOptions}
+          style={{ width: "100%" }}
+          placeholder="Типы объекта"
+          onChange={(value) =>
+            setFilter({
+              ...filter,
+              property_object: value.length ? value : null,
+            })
+          }
+          mode={"multiple"}
+          allowClear
+        />
+      </Input.Group>
+      <Input.Group>
         <InputNumber
           placeholder="Комнаты"
           style={{ margin: "1em 0", width: 100 }}
-          allowClear
+          // allowClear
           onChange={(value) => {
             setFilter({ ...filter, rooms: value })
           }}
