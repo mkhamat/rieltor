@@ -16,6 +16,16 @@ export default function AppartmentCard({ props, user, fetch, p }) {
       }
     })
   }
+
+  const genTitle = () => {
+    let obj = props.property_object
+    if (obj && (obj !== "Квартира" || obj !== "Дом")) {
+      return `${obj} ${props.m2} м²`
+    } else {
+      return `${props.rooms}-комн., ${props.m2} м², ${props.floor} из ${props.floors} этаж`
+    }
+  }
+
   let pnt = pricentype(props.price, props.price_type)
   return (
     <Badge.Ribbon
@@ -66,10 +76,7 @@ export default function AppartmentCard({ props, user, fetch, p }) {
         }
       >
         <Link to={`/appartments/${props._id}`}>
-          <Meta
-            title={`${props.rooms}-комн., ${props.m2} м², ${props.floor} из ${props.floors} этаж`}
-            description={props.address}
-          />
+          <Meta title={genTitle()} description={props.address} />
         </Link>
       </Card>
     </Badge.Ribbon>
