@@ -1,13 +1,14 @@
+import ImgCrop from "antd-img-crop"
 import { Upload, message } from "antd"
 import { InboxOutlined } from "@ant-design/icons"
 
-const { Dragger } = Upload
+// const { Dragger: Upload } = Upload
 
 export default function UploadArea({ imageList, setImageList }) {
   const props = {
     name: "image",
-    multiple: true,
     action: "/api/images",
+    listType: "picture-card",
 
     onChange(info) {
       const { status } = info.file
@@ -23,13 +24,13 @@ export default function UploadArea({ imageList, setImageList }) {
   }
 
   return (
-    <Dragger {...props}>
-      <p className="ant-upload-drag-icon">
-        <InboxOutlined />
-      </p>
-      <p className="ant-upload-text">
-        Выберете или перетащите файлы в эту область для загрузки
-      </p>
-    </Dragger>
+    <ImgCrop>
+      <Upload {...props}>
+        <p className="ant-upload-drag-icon">
+          <InboxOutlined />
+        </p>
+        <p className="ant-upload-text">Выберете файлы для загрузки</p>
+      </Upload>
+    </ImgCrop>
   )
 }
