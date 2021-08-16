@@ -8,7 +8,9 @@ import {
   Image,
   Popconfirm,
   Radio,
+  Space,
 } from "antd"
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons"
 import UploadArea from "../components/Upload.js"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -169,9 +171,44 @@ export default function NewAppartmentScreen() {
         <Form.Item name="m2" label="Общая площадь, м2">
           <InputNumber min={1} maxLength={8} style={{ width: 100 }} />
         </Form.Item>
-        <Form.Item name="phone" label="Телефон">
-          <Input style={{ width: 230 }} />
-        </Form.Item>
+        <Form.List name="numbers">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, fieldKey, ...restField }) => (
+                <Space
+                  key={key}
+                  style={{ display: "flex", marginBottom: 8 }}
+                  align="baseline"
+                >
+                  <Form.Item
+                    {...restField}
+                    name={[name, "number"]}
+                    fieldKey={[fieldKey, "number"]}
+                  >
+                    <Input placeholder="Номер телефона" />
+                  </Form.Item>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "name"]}
+                    fieldKey={[fieldKey, "name"]}
+                  >
+                    <Input placeholder="Имя" />
+                  </Form.Item>
+                  <MinusCircleOutlined onClick={() => remove(name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  icon={<PlusOutlined />}
+                >
+                  Новый номер
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
         <Form.Item name="description" label="Описание, ключевые слова">
           <Input.TextArea autoSize allowClear />
         </Form.Item>
