@@ -19,7 +19,7 @@ export default function AppartmentCard({ props, user, fetch, p }) {
 
   const genTitle = () => {
     let obj = props.property_object
-    if (obj && (obj !== "Квартира" || obj !== "Дом")) {
+    if (obj && obj !== "Квартира" && obj !== "Дом") {
       return `${obj} ${props.m2} м²`
     } else {
       return `${props.rooms}-комн., ${props.m2} м², ${props.floor} из ${props.floors} этаж`
@@ -34,6 +34,7 @@ export default function AppartmentCard({ props, user, fetch, p }) {
       color={pnt.color}
     >
       <Card
+        size="small"
         actions={
           user.admin && [
             <Link to={`/editappartment/${props._id}`}>
@@ -61,6 +62,7 @@ export default function AppartmentCard({ props, user, fetch, p }) {
                     src={`/static/${pic}`}
                     alt="Фотография квартиры"
                     key={pic + i}
+                    style={{ width: 50 }}
                   />
                 )
               })}
