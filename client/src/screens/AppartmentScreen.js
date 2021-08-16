@@ -71,15 +71,15 @@ export default function AppartmentScreen() {
             </>
           }
         >
-          {(info.numbers &&
-            info.numbers.map((number) => {
-              return (
-                <p>
-                  {number.number} - {number.name}
-                </p>
-              )
-            })) ||
-            (info.phone && <p>{info.phone}</p>)}
+          {(info.phone && <p>{info.phone}</p>) ||
+            (info.numbers &&
+              info.numbers.map((number) => {
+                return (
+                  <p>
+                    {number.number} - {number.name}
+                  </p>
+                )
+              }))}
         </Collapse.Panel>
       </Collapse>
       <p>{info.description}</p>
