@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const propertySchema = new mongoose.Schema({
   address: {
@@ -31,9 +31,10 @@ const propertySchema = new mongoose.Schema({
   phone: {
     type: Number,
   },
+  numbers: [],
   pictures: [],
-});
+})
 
-propertySchema.index({ address: "text", description: "text" });
-const Property = mongoose.model("Appartment", propertySchema);
-export { Property };
+propertySchema.index({ address: "text", description: "text" })
+const Property = mongoose.model("Appartment", propertySchema)
+export { Property }
