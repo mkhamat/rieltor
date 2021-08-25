@@ -29,12 +29,12 @@ const propertySchema = new mongoose.Schema({
     type: String,
   },
   phone: {
-    type: Number,
+    type: String,
   },
   numbers: [],
   pictures: [],
 })
 
-propertySchema.index({ address: "text", description: "text" })
+propertySchema.index({ address: "text", description: "text", phone: "text" })
 const Property = mongoose.model("Appartment", propertySchema)
 export { Property }
