@@ -42,7 +42,6 @@ async function addAppartment(req, res, next) {
 }
 
 async function getAppartments(req, res, next) {
-  console.log(req.body.filter)
   try {
     let { current = 1, limit = 10 } = req.body.pageState
 
@@ -51,9 +50,7 @@ async function getAppartments(req, res, next) {
 
     for (let key in filter) {
       if (filter[key] !== null && filter[key] !== "") {
-        if (key === "search") {
-          filters["$text"] = { $search: filter.search }
-        } else if (key === "m2") {
+        if (key === "m2") {
           filters["m2"] = { $gte: filter.m2 }
         } else if (key === "m22") {
           filters["m2"] = { $lte: filter.m22 }
@@ -61,10 +58,20 @@ async function getAppartments(req, res, next) {
           filters["price"] = { $gte: filter.priceFrom }
         } else if (key === "priceTo") {
           filters["price"] = { $lte: filter.priceTo }
+        } else if (key === "roomsFrom") {
+          filters["rooms"] = { $gte: filter.roomsFrom }
+        } else if (key === "roomsTo") {
+          filters["rooms"] = { $lte: filter.roomsTo }
+        } else if (key === "floorFrom") {
+          filters["floor"] = { $gte: filter.floorFrom }
+        } else if (key === "floorTo") {
+          filters["floor"] = { $lte: filter.floorTo }
         } else if (key === "property_object") {
           filters["property_object"] = { $in: filter.property_object }
+        } else if (key === "phone") {
+          filters['$or'] = [{ "phone": { $regex: new RegExp(`${filter[key]}`, 'i') } }, { "numbers.number": { $regex: new RegExp(`${filter[key]}`, 'i') } }]
         } else {
-          filters[key] = filter[key]
+          filters[key] = { $regex: new RegExp(`${filter[key]}`, 'i') }
         }
       }
     }
@@ -72,7 +79,7 @@ async function getAppartments(req, res, next) {
     let apps = await Property.find(filters)
       .limit(limit)
       .skip((current - 1) * limit)
-
+    console.log(filters);
     let count = await Property.countDocuments(filters)
     res.status(200).json({
       pageState: {
