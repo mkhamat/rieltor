@@ -22,6 +22,7 @@ dotenv.config()
 export default function NewAppartmentScreen() {
   const [imageList, setImageList] = useState([])
   const [property, setProperty] = useState(null)
+  const [minFloors, setMinFloors] = useState(0)
   const history = useHistory()
   const { id } = useParams()
   const [form] = Form.useForm()
@@ -39,14 +40,14 @@ export default function NewAppartmentScreen() {
 
   useEffect(() => {
     console.log("effect")
-    ;(async () => {
-      if (id) {
-        axios.get(`/api/appartments/${id}`).then((res) => {
-          form.setFieldsValue(res.data)
-          setImageList([...res.data.pictures])
-        })
-      }
-    })()
+      ; (async () => {
+        if (id) {
+          axios.get(`/api/appartments/${id}`).then((res) => {
+            form.setFieldsValue(res.data)
+            setImageList([...res.data.pictures])
+          })
+        }
+      })()
   }, [form, id])
 
   const onFinish = async (values) => {
@@ -122,26 +123,26 @@ export default function NewAppartmentScreen() {
         labelAlign={"left"}
         form={form}
       >
-        <Form.Item name="address" label="Адрес">
+        <Form.Item name="address" label="Адрес" required>
           <AutoComplete
             options={options}
             onSearch={onSearch}
             placeholder="Поиск по улице, индексу"
           />
         </Form.Item>
-        <Form.Item name="price_type" label="Тип сделки">
+        <Form.Item name="price_type" label="Тип сделки" required>
           <Radio.Group>
             <Radio.Button value="rent">Аренда</Radio.Button>
             <Radio.Button value="sell">Продажа</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="property_type" label="Тип недвижимости">
+        <Form.Item name="property_type" label="Тип недвижимости" required>
           <Radio.Group onChange={(e) => setProperty(e.target.value)}>
             <Radio.Button value="housing">Жилая</Radio.Button>
             <Radio.Button value="commercial">Коммерческая</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="property_object" label="Тип объекта">
+        <Form.Item name="property_object" label="Тип объекта" required>
           <Radio.Group
             optionType={"button"}
             options={
@@ -150,7 +151,7 @@ export default function NewAppartmentScreen() {
             }
           />
         </Form.Item>
-        <Form.Item name="price" label="Цена">
+        <Form.Item name="price" label="Цена" required>
           <InputNumber
             formatter={(value) =>
               `₽ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -159,16 +160,20 @@ export default function NewAppartmentScreen() {
             style={{ width: 150 }}
           />
         </Form.Item>
-        <Form.Item name="floor" label="Этаж">
-          <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
+        <Form.Item name="floor" label="Этаж" required>
+          <InputNumber min={1} maxLength={3} style={{ width: 60 }} onChange={(value) => setMinFloors(value)} />
         </Form.Item>
-        <Form.Item name="floors" label="Кол-во этажей в доме">
-          <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
-        </Form.Item>
-        <Form.Item name="rooms" label="Кол-во комнат">
-          <InputNumber min={1} maxLength={3} style={{ width: 60 }} />
-        </Form.Item>
-        <Form.Item name="m2" label="Общая площадь, м2">
+        {property === 'housing' && (
+          <>
+            <Form.Item name="floors" label="Кол-во этажей в доме" >
+              <InputNumber min={minFloors} maxLength={3} style={{ width: 60 }} />
+            </Form.Item>
+            <Form.Item name="rooms" label="Кол-во комнат">
+              <InputNumber min={0} maxLength={3} style={{ width: 60 }} />
+            </Form.Item>
+          </>
+        )}
+        <Form.Item name="m2" label="Общая площадь, м2" required>
           <InputNumber min={1} maxLength={8} style={{ width: 100 }} />
         </Form.Item>
         <Form.List name="numbers">
