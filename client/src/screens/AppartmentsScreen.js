@@ -17,14 +17,19 @@ export default function AppartmentScreen({ user }) {
   const [apps, setApps] = useState([])
 
   const [filter, setFilter] = useState({
-    search: null,
-    rooms: null,
-    floor: null,
+    address: null,
     m2: null,
     m22: null,
     price_type: null,
+    property_object: null,
+    property_type: null,
     priceFrom: null,
     priceTo: null,
+    roomsFrom: null,
+    roomsTo: null,
+    floorFrom: null,
+    floorTo: null,
+    phone: null,
   })
 
   const [pageState, setPageState] = useState({
@@ -83,25 +88,43 @@ export default function AppartmentScreen({ user }) {
       <Collapse ghost>
         <Collapse.Panel header="Поиск и фильтрация">
           <Input
-            style={{ margin: "1em 0", width: 150 }}
+            style={{ margin: ".5em 0", width: 150 }}
             placeholder="Общий поиск"
             onChange={(e) => {
-              setFilter({ ...filter, search: e.target.value })
+              setFilter({ ...filter, address: e.target.value })
             }}
           />
-          <Radio.Group
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setFilter({ ...filter, price_type: e.target.value })
+          <Input.Group>
+            <Radio.Group
+              onChange={(e) => {
+                setFilter({ ...filter, price_type: e.target.value })
+              }}
+            >
+              <Radio.Button value="rent">Аренда</Radio.Button>
+              <Radio.Button value="sell">Продажа</Radio.Button>
+            </Radio.Group>
+          </Input.Group>
+          <Input.Group>
+            <Radio.Group style={{ marginTop: '.5rem' }}
+              onChange={(e) => {
+                setFilter({ ...filter, property_type: e.target.value })
+              }}
+            >
+              <Radio.Button value="housing">Жилая</Radio.Button>
+              <Radio.Button value="commercial">Коммерческая</Radio.Button>
+            </Radio.Group>
+          </Input.Group>
+          <Input
+            placeholder="Номер телефона"
+            style={{ marginTop: ".5rem", width: 150 }}
+            onChange={({ target }) => {
+              setFilter({ ...filter, phone: target.value })
             }}
-          >
-            <Radio.Button value="rent">Аренда</Radio.Button>
-            <Radio.Button value="sell">Продажа</Radio.Button>
-          </Radio.Group>
+          />
           <Input.Group>
             <Select
               options={selectOptions}
-              style={{ width: "100%" }}
+              style={{ marginTop: ".5rem", width: "100%" }}
               placeholder="Типы объекта"
               onChange={(value) =>
                 setFilter({
@@ -115,21 +138,39 @@ export default function AppartmentScreen({ user }) {
           </Input.Group>
           <Input.Group>
             <InputNumber
-              placeholder="Комнаты"
-              style={{ margin: "1em 0", width: 100 }}
-              // allowClear
+              placeholder="Комнаты >"
+              style={{ marginTop: ".5rem", width: 100 }}
               onChange={(value) => {
-                setFilter({ ...filter, rooms: value })
+                setFilter({ ...filter, roomsFrom: value })
+              }}
+            />
+            <InputNumber
+              placeholder="< Комнаты"
+              style={{ marginTop: ".5rem", width: 100 }}
+              onChange={(value) => {
+                setFilter({ ...filter, roomsTo: value })
+              }}
+            />
+          </Input.Group>
+          <Input.Group>
+            <InputNumber
+              min={1}
+              type="number"
+              maxLength={3}
+              style={{ marginTop: ".5rem", width: 100 }}
+              placeholder="Этаж >"
+              onChange={(value) => {
+                setFilter({ ...filter, floorFrom: value })
               }}
             />
             <InputNumber
               min={1}
               type="number"
               maxLength={3}
-              style={{ margin: "1em 0", width: 100 }}
-              placeholder="Этаж"
+              style={{ marginTop: ".5rem", width: 100 }}
+              placeholder="< Этаж"
               onChange={(value) => {
-                setFilter({ ...filter, floor: value })
+                setFilter({ ...filter, floorTo: value })
               }}
             />
           </Input.Group>
@@ -138,7 +179,7 @@ export default function AppartmentScreen({ user }) {
               min={1}
               type="number"
               maxLength={8}
-              style={{ margin: "1em 0", width: 100 }}
+              style={{ marginTop: ".5rem", width: 100 }}
               placeholder="Площадь >"
               onChange={(value) => {
                 setFilter({ ...filter, m2: value })
@@ -148,7 +189,7 @@ export default function AppartmentScreen({ user }) {
               min={1}
               type="number"
               maxLength={8}
-              style={{ margin: "1em 0", width: 100 }}
+              style={{ marginTop: ".5rem", width: 100 }}
               placeholder="< Площадь"
               onChange={(value) => {
                 setFilter({ ...filter, m22: value })
@@ -159,7 +200,7 @@ export default function AppartmentScreen({ user }) {
             <InputNumber
               min={1}
               type="number"
-              style={{ margin: "1em 0", width: 100 }}
+              style={{ marginTop: ".5rem", width: 100 }}
               placeholder="Цена >"
               onChange={(value) => {
                 setFilter({ ...filter, priceFrom: value })
@@ -168,7 +209,7 @@ export default function AppartmentScreen({ user }) {
             <InputNumber
               min={1}
               type="number"
-              style={{ margin: "1em 0", width: 100 }}
+              style={{ marginTop: ".5rem", width: 100 }}
               placeholder="< Цена"
               onChange={(value) => {
                 setFilter({ ...filter, priceTo: value })
