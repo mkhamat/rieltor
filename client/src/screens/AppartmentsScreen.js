@@ -79,6 +79,7 @@ export default function AppartmentScreen({ user }) {
     <>
       <BackTop />
       <Pagination
+        showSizeChanger={false}
         onChange={handleChange}
         current={pageState.current}
         pageSize={pageState.limit}
